@@ -1,0 +1,79 @@
+{
+	"name": "ds_station1_excel",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Server_Performance_Station1",
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Server_Performance_Station1.xlsx",
+				"fileSystem": "bronze"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Log_ID",
+				"type": "String"
+			},
+			{
+				"name": "Server_ID",
+				"type": "String"
+			},
+			{
+				"name": "Server_Cluster",
+				"type": "String"
+			},
+			{
+				"name": "Log_Timestamp",
+				"type": "String"
+			},
+			{
+				"name": "CPU_Utilization (%)",
+				"type": "String"
+			},
+			{
+				"name": "Memory_Usage (%)",
+				"type": "String"
+			},
+			{
+				"name": "Disk_IO (%)",
+				"type": "String"
+			},
+			{
+				"name": "Network_Traffic_In (MB/s)",
+				"type": "String"
+			},
+			{
+				"name": "Network_Traffic_Out (MB/s)",
+				"type": "String"
+			},
+			{
+				"name": "Uptime (Hours)",
+				"type": "String"
+			},
+			{
+				"name": "Downtime (Hours)",
+				"type": "String"
+			},
+			{
+				"name": "Config_Version",
+				"type": "String"
+			},
+			{
+				"name": "Last_Patch_Date",
+				"type": "String"
+			},
+			{
+				"name": "Deployment_Token",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

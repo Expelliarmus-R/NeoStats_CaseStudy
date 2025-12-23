@@ -1,0 +1,59 @@
+{
+	"name": "Excel1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Server_Metadata",
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Server_Metadata.xlsx",
+				"fileSystem": "bronze"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Server_ID",
+				"type": "String"
+			},
+			{
+				"name": "Hostname",
+				"type": "String"
+			},
+			{
+				"name": "IP_Address",
+				"type": "String"
+			},
+			{
+				"name": "OS_Type",
+				"type": "String"
+			},
+			{
+				"name": "Server_Location",
+				"type": "String"
+			},
+			{
+				"name": "Admin_Name",
+				"type": "String"
+			},
+			{
+				"name": "Server_Cluster",
+				"type": "String"
+			},
+			{
+				"name": "Admin_Email",
+				"type": "String"
+			},
+			{
+				"name": "Admin_Phone",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

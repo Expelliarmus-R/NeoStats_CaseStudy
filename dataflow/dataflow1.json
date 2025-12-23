@@ -1,0 +1,214 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_station1_excel",
+						"type": "DatasetReference"
+					},
+					"name": "srcstation1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_station2_excel",
+						"type": "DatasetReference"
+					},
+					"name": "srcstation2"
+				},
+				{
+					"dataset": {
+						"referenceName": "Excel1",
+						"type": "DatasetReference"
+					},
+					"name": "srcmetadata"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Parquet1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "select1"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "filter2"
+				},
+				{
+					"name": "station1derived"
+				},
+				{
+					"name": "station2dervied"
+				},
+				{
+					"name": "union1"
+				},
+				{
+					"name": "stationsunionderrived"
+				},
+				{
+					"name": "metadataderived"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "selectafterjoin"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Log_ID as string,",
+				"          Server_ID as string,",
+				"          Server_Cluster as string,",
+				"          Log_Timestamp as string,",
+				"          {CPU_Utilization (%)} as string,",
+				"          {Memory_Usage (%)} as string,",
+				"          {Disk_IO (%)} as string,",
+				"          {Network_Traffic_In (MB/s)} as string,",
+				"          {Network_Traffic_Out (MB/s)} as string,",
+				"          {Uptime (Hours)} as string,",
+				"          {Downtime (Hours)} as string,",
+				"          Config_Version as string,",
+				"          Last_Patch_Date as string,",
+				"          Deployment_Token as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> srcstation1",
+				"source(output(",
+				"          Log_ID as string,",
+				"          Server_ID as string,",
+				"          Server_Cluster as string,",
+				"          Log_Timestamp as string,",
+				"          {CPU_Utilization (%)} as string,",
+				"          {Memory_Usage (%)} as string,",
+				"          {Disk_IO (%)} as string,",
+				"          {Network_Traffic_In (MB/s)} as string,",
+				"          {Network_Traffic_Out (MB/s)} as string,",
+				"          {Uptime (Hours)} as string,",
+				"          {Downtime (Hours)} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> srcstation2",
+				"source(output(",
+				"          Server_ID as string,",
+				"          Hostname as string,",
+				"          IP_Address as string,",
+				"          OS_Type as string,",
+				"          Server_Location as string,",
+				"          Admin_Name as string,",
+				"          Server_Cluster as string,",
+				"          Admin_Email as string,",
+				"          Admin_Phone as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> srcmetadata",
+				"srcstation1 select(mapColumn(",
+				"          log_id = Log_ID,",
+				"          server_id = Server_ID,",
+				"          server_cluster = Server_Cluster,",
+				"          log_timestamp = Log_Timestamp,",
+				"          cpu_utilization = {CPU_Utilization (%)},",
+				"          memory_usage = {Memory_Usage (%)},",
+				"          disk_io = {Disk_IO (%)},",
+				"          network_traffic_in = {Network_Traffic_In (MB/s)},",
+				"          network_traffic_out = {Network_Traffic_Out (MB/s)},",
+				"          uptime_hours = {Uptime (Hours)},",
+				"          downtime_hours = {Downtime (Hours)}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"srcstation2 select(mapColumn(",
+				"          log_id = Log_ID,",
+				"          server_id = Server_ID,",
+				"          server_cluster = Server_Cluster,",
+				"          log_timestamp = Log_Timestamp,",
+				"          cpu_utilization = {CPU_Utilization (%)},",
+				"          memory_usage = {Memory_Usage (%)},",
+				"          disk_io = {Disk_IO (%)},",
+				"          network_traffic_in = {Network_Traffic_In (MB/s)},",
+				"          network_traffic_out = {Network_Traffic_Out (MB/s)},",
+				"          uptime_hours = {Uptime (Hours)},",
+				"          downtime_hours = {Downtime (Hours)}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select1 filter(!isNull(cpu_utilization) && !isNull(memory_usage)) ~> filter1",
+				"select2 filter(!isNull(cpu_utilization) && !isNull(memory_usage)) ~> filter2",
+				"filter1 derive(network_traffic_in = iif(   isNull(network_traffic_in) || trim(toString(network_traffic_in)) == '',   toDouble(null()),   toDouble(network_traffic_in) ),",
+				"          network_traffic_out = iif(   isNull(network_traffic_out) || trim(toString(network_traffic_out)) == '',   toDouble(null()),   toDouble(network_traffic_out) ),",
+				"          uptime_hours = iif(   isNull(uptime_hours) || trim(toString(uptime_hours)) == '',   toDouble(null()),   toDouble(uptime_hours) ),",
+				"          downtime_hours = iif(   isNull(downtime_hours) || trim(toString(downtime_hours)) == '',   toDouble(null()),   toDouble(downtime_hours) ),",
+				"          cpu_utilization = iif(   isNull(cpu_utilization) || trim(toString(cpu_utilization)) == '',   toDouble(null()),   toDouble(cpu_utilization) ),",
+				"          memory_usage = iif(   isNull(memory_usage) || trim(toString(memory_usage)) == '',   toDouble(null()),   toDouble(memory_usage) ),",
+				"          disk_io = iif(   isNull(disk_io) || trim(toString(disk_io)) == '',   toDouble(null()),   toDouble(disk_io) ),",
+				"          server_id = trim(toString(server_id))) ~> station1derived",
+				"filter2 derive(server_id = trim(toString(server_id)),",
+				"          network_traffic_in = iif(   isNull(network_traffic_in) || trim(toString(network_traffic_in)) == '',   toDouble(null()),   toDouble(network_traffic_in) ),",
+				"          network_traffic_out = iif(   isNull(network_traffic_out) || trim(toString(network_traffic_out)) == '',   toDouble(null()),   toDouble(network_traffic_out) ),",
+				"          uptime_hours = iif(   isNull(uptime_hours) || trim(toString(uptime_hours)) == '',   toDouble(null()),   toDouble(uptime_hours) ),",
+				"          downtime_hours = iif(   isNull(downtime_hours) || trim(toString(downtime_hours)) == '',   toDouble(null()),   toDouble(downtime_hours) ),",
+				"          cpu_utilization = iif(   isNull(cpu_utilization) || trim(toString(cpu_utilization)) == '',   toDouble(null()),   toDouble(cpu_utilization) ),",
+				"          memory_usage = iif(   isNull(memory_usage) || trim(toString(memory_usage)) == '',   toDouble(null()),   toDouble(memory_usage) ),",
+				"          disk_io = iif(   isNull(disk_io) || trim(toString(disk_io)) == '',   toDouble(null()),   toDouble(disk_io) )) ~> station2dervied",
+				"station1derived, station2dervied union(byName: true)~> union1",
+				"union1 derive(server_id = lower(trim(toString(byName('server_id'))))) ~> stationsunionderrived",
+				"srcmetadata derive(Server_ID = lower(trim(toString(byName('Server_ID'))))) ~> metadataderived",
+				"stationsunionderrived, metadataderived join(stationsunionderrived@server_id == metadataderived@Server_ID,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 select(mapColumn(",
+				"          log_id,",
+				"          server_id = stationsunionderrived@server_id,",
+				"          server_cluster = union1@server_cluster,",
+				"          log_timestamp,",
+				"          cpu_utilization,",
+				"          memory_usage,",
+				"          disk_io,",
+				"          network_traffic_in,",
+				"          network_traffic_out,",
+				"          uptime_hours,",
+				"          downtime_hours,",
+				"          Server_ID = metadataderived@Server_ID,",
+				"          Hostname,",
+				"          IP_Address,",
+				"          OS_Type,",
+				"          Server_Location,",
+				"          Admin_Name,",
+				"          Server_Cluster = srcmetadata@Server_Cluster,",
+				"          Admin_Email,",
+				"          Admin_Phone",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectafterjoin",
+				"selectafterjoin sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}
