@@ -85,14 +85,13 @@ Stored in Parquet for reporting.
 
 ---
 
-##  Azure Data Factory – What We Built
+##  Azure Data Factory 
 
 ### ADF Components
 - Pipelines
 - Dataflows
 - Linked Services
 - Datasets
-- Triggers
 
 ### ETL Flow
 1. Source → read raw station logs
