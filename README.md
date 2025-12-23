@@ -19,12 +19,10 @@ Build a complete **data engineering + analytics pipeline** to monitor server per
 ##  Overall Architecture
 1) Raw Server Logs + Metadata  
 2) Azure Data Factory (ETL) 
-3) Azure Data Lake Storage Gen2
-   
+3) Azure Data Lake Storage Gen2  
 i).bronze/ (raw data)
 ii).silver/ (cleaned & standardized)
 iii).gold/ (aggregated KPIs)
-
 4)powerBI DashBoards (UseD the gold Layer tables in PowerBi)
 
 
@@ -32,7 +30,7 @@ iii).gold/ (aggregated KPIs)
 
 ---
 
-## 🛠️ Tools & Services Used
+##  Tools & Services Used
 
 | Layer | Tool |
 |-----|------|
@@ -45,9 +43,9 @@ iii).gold/ (aggregated KPIs)
 
 ---
 
-## 📂 Data Layers Explained
+##  Data Layers Explained
 
-### 🥉 Bronze Layer (Raw)
+###  Bronze Layer (Raw)
 - Stores data exactly as received
 - No transformation
 - Format: Parquet
@@ -63,7 +61,7 @@ Example fields:
 
 ---
 
-### 🥈 Silver Layer (Cleaned)
+###  Silver Layer (Cleaned)
 Transformations applied:
 - Removed null values
 - Standardized column names
@@ -76,7 +74,7 @@ Output:
 
 ---
 
-### 🥇 Gold Layer (Aggregated)
+###  Gold Layer (Aggregated)
 Aggregations:
 - Avg CPU utilization
 - Avg memory usage
@@ -91,7 +89,7 @@ Stored in Parquet for reporting.
 
 ---
 
-## 🔄 Azure Data Factory – What We Built
+##  Azure Data Factory – What We Built
 
 ### ADF Components
 - Pipelines
@@ -111,11 +109,10 @@ Stored in Parquet for reporting.
 
 ---
 
-## 🔐 GitHub Integration with ADF
+##  GitHub Integration with ADF
 
 All ADF artifacts are stored in GitHub.
 
-### Repository Structure
 
 
 
