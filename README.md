@@ -17,13 +17,9 @@ Build a complete **data engineering + analytics pipeline** to monitor server per
 
 
 ##  Overall Architecture
-Raw Server Logs + Metadata
-|
-v
-Azure Data Factory (ETL)
-|
-v
-Azure Data Lake Storage Gen2
+Raw Server Logs + Metadata  -- > Azure Data Factory (ETL) --> Azure Data Lake Storage Gen2 
 ├── bronze/ (raw data)
 ├── silver/ (cleaned & standardized)
 └── gold/ (aggregated KPIs)
+
+
