@@ -8,7 +8,7 @@ Azure Data Factory | Azure Data Lake Gen2 | Parquet | Power BI | GitHub
 
 ##  Project Objective
 
-Build a complete **data engineering + analytics pipeline** to monitor server performance by:
+Build a complete **analytics pipeline** to monitor server performance by:
 - Ingesting raw server logs
 - Cleaning and aggregating data using ADF
 - Storing data in Bronze, Silver, and Gold layers
@@ -21,9 +21,7 @@ Build a complete **data engineering + analytics pipeline** to monitor server per
 1) Raw Server Logs + Metadata  
 2) Azure Data Factory (ETL) 
 3) Azure Data Lake Storage Gen2 (Bronze Container,Silver Container,Gold Container)
-4)powerBI DashBoards (UseD the gold Layer tables in PowerBi)
-
-
+4) powerBI DashBoards (UseD the gold Layer tables in PowerBi)
 
 
 ---
