@@ -15,14 +15,12 @@ Build a complete **data engineering + analytics pipeline** to monitor server per
 - Creating interactive dashboards in Power BI
 - Managing everything using GitHub version control
 
+---
 
 ##  Overall Architecture
 1) Raw Server Logs + Metadata  
 2) Azure Data Factory (ETL) 
-3) Azure Data Lake Storage Gen2  
-i).bronze/ (raw data)
-ii).silver/ (cleaned & standardized)
-iii).gold/ (aggregated KPIs)
+3) Azure Data Lake Storage Gen2 (Bronze Container,Silver Container,Gold Container)
 4)powerBI DashBoards (UseD the gold Layer tables in PowerBi)
 
 
